@@ -6,17 +6,24 @@ import android.content.Intent;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SMSListener extends BroadcastReceiver {
+
+    private Set<String> contacts;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
+        if(Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction()))
         {
+            contacts = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet("alarmContacts", new HashSet<String>());
             for(SmsMessage msg : Telephony.Sms.Intents.getMessagesFromIntent(intent))
             {
-                if(msg.getMessageBody().contains("panic") || msg.getMessageBody().contains("Panic") || msg.getMessageBody().contains("PANIC"))
+                if(contacts.contains(msg.getOriginatingAddress()) && (msg.getMessageBody().contains("panic") || msg.getMessageBody().contains("Panic") || msg.getMessageBody().contains("PANIC")))
                 {
                     triggerAlarm();
+                    break;
                 }
             }
         }
