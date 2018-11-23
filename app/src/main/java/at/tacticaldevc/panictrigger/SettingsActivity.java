@@ -11,16 +11,32 @@ import java.util.HashSet;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        prefs = getSharedPreferences("conf", MODE_PRIVATE);
+
+        for (String word : prefs.getStringSet("triggerWords", new HashSet<>(Arrays.asList("panic", "Panic", "PANIC"))))
+        {
+            ((EditText) findViewById(R.id.triggerWords)).append(word + ", ");
+        }
+
+        for (String number : prefs.getStringSet("notifyNumbers", new HashSet<String>()))
+        {
+            ((EditText) findViewById(R.id.notifyNumbers)).append(number + "\n");
+        }
+
+        for (String number : prefs.getStringSet("triggerNumbers", new HashSet<String>()))
+        {
+            ((EditText) findViewById(R.id.triggerNumbers)).append(number + "\n");
+        }
     }
 
     @Override
     public void onClick(View v) {
-        SharedPreferences prefs = getSharedPreferences("conf", MODE_PRIVATE);
-
         prefs.edit().putStringSet("triggerWords", new HashSet<>(
                 Arrays.asList(((EditText) findViewById(R.id.triggerWords)).getText().toString().split(", "))
         )).apply();
