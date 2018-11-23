@@ -2,11 +2,16 @@ package at.tacticaldevc.panictrigger;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class TriggerActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -37,6 +42,13 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.triggerButton:
+                Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet("notifyNumbers", new HashSet<String>());
+                String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString("keyword", "Panic");
+                SmsManager manager = SmsManager.getDefault();
+                for (String number : contacts)
+                {
+                    manager.sendTextMessage(number, null, keyword, null, null);
+                }
                 break;
             case R.id.configure:
                 Intent settings = new Intent(this, SettingsActivity.class);

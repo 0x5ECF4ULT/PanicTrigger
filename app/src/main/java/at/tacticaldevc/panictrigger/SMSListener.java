@@ -51,6 +51,6 @@ public class SMSListener extends BroadcastReceiver {
         }
         mp.stop();
         mp.release();
-        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(address)));
+        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address)));
     }
 }
