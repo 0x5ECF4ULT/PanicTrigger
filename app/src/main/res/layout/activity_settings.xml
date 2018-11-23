@@ -8,15 +8,26 @@
 
     <EditText
         android:id="@+id/triggerWords"
-        android:layout_width="0dp"
+        android:layout_width="384dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Triggering words (word1, ...)"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/notifyNumbers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/keyword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Word to send"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/notifyNumbers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/triggerWords" />
 
     <EditText
         android:id="@+id/notifyNumbers"
@@ -28,7 +39,7 @@
         app:layout_constraintBottom_toTopOf="@+id/triggerNumbers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/triggerWords" />
+        app:layout_constraintTop_toBottomOf="@+id/keyword" />
 
     <EditText
         android:id="@+id/triggerNumbers"
