@@ -24,6 +24,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             ((EditText) findViewById(R.id.triggerWords)).append(word + ", ");
         }
 
+        ((EditText) findViewById(R.id.keyword)).setText(prefs.getString("keyword", "Panic"));
+
         for (String number : prefs.getStringSet("notifyNumbers", new HashSet<String>()))
         {
             ((EditText) findViewById(R.id.notifyNumbers)).append(number + "\n");
@@ -40,6 +42,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         prefs.edit().putStringSet("triggerWords", new HashSet<>(
                 Arrays.asList(((EditText) findViewById(R.id.triggerWords)).getText().toString().split(", "))
         )).apply();
+
+        prefs.edit().putString("keyword", ((EditText) findViewById(R.id.keyword)).getText().toString()).apply();
 
         prefs.edit().putStringSet("notifyNumbers", new HashSet<>(
                 Arrays.asList(((EditText) findViewById(R.id.notifyNumbers)).getText().toString().split("\n"))
