@@ -1,13 +1,37 @@
 package at.tacticaldevc.panictrigger;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.EditText;
 
-public class SettingsActivity extends AppCompatActivity {
+import java.util.Arrays;
+import java.util.HashSet;
+
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+    }
+
+    @Override
+    public void onClick(View v) {
+        SharedPreferences prefs = getSharedPreferences("conf", MODE_PRIVATE);
+
+        prefs.edit().putStringSet("triggerWords", new HashSet<>(
+                Arrays.asList(((EditText) findViewById(R.id.triggerWords)).getText().toString().split(", "))
+        )).apply();
+
+        prefs.edit().putStringSet("notifyNumbers", new HashSet<>(
+                Arrays.asList(((EditText) findViewById(R.id.notifyNumbers)).getText().toString().split("\n"))
+        )).apply();
+
+        prefs.edit().putStringSet("triggerNumbers", new HashSet<>(
+                Arrays.asList(((EditText) findViewById(R.id.triggerNumbers)).getText().toString().split("\n"))
+        )).apply();
+        finish();
     }
 }

@@ -6,12 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-    <Button
-        android:id="@+id/button2"
+    <EditText
+        android:id="@+id/triggerWords"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:ems="10"
+        android:hint="Triggering words (word1, ...)"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/notifyNumbers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/notifyNumbers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="Contact numbers to notify! \nOne each line"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/triggerNumbers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/triggerWords" />
+
+    <EditText
+        android:id="@+id/triggerNumbers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="Contact number that can trigger the alarm!\nOne each line"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notifyNumbers" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

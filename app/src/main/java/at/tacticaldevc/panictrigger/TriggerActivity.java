@@ -1,5 +1,6 @@
 package at.tacticaldevc.panictrigger;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,8 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.triggerButton:
                 break;
             case R.id.configure:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
                 break;
         }
     }
