@@ -9,6 +9,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ public class SMSListener extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if(Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction()))
         {
-            Set<String> contacts = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet("alarmContacts", new HashSet<String>());
+            Set<String> contacts = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet("triggerNumbers", new HashSet<String>());
             Set<String> msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet("triggerWords", new HashSet<String>());
             for(SmsMessage msg : Telephony.Sms.Intents.getMessagesFromIntent(intent))
             {
@@ -50,7 +51,6 @@ public class SMSListener extends BroadcastReceiver {
         }
         mp.stop();
         mp.release();
-
         context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(address)));
     }
 }
