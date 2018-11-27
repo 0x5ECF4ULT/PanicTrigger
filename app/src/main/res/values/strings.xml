@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PanicTrigger</string>
+    <string name="title_activity_contact_picker">ContactPickerActivity</string>
 </resources>

@@ -1,7 +1,6 @@
 package at.tacticaldevc.panictrigger;
 
-import android.app.Notification;
-import android.app.PendingIntent;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.telephony.SmsMessage;
 
 import java.io.IOException;
@@ -45,13 +45,16 @@ public class SMSListener extends BroadcastReceiver {
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM, audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0);
         try {
             mp.setDataSource(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+            //TODO: Ringtone doesn't seem to loop...
             mp.setLooping(true);
             mp.prepare();
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "")
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!")
                     .setPriority(NotificationCompat.PRIORITY_MAX);
-                    //.setContentIntent(PendingIntent.getBroadcast(context, 0, callIntent, 0));
+                    //TODO: Make PendingIntent interrupt the countdown and call immediately
+                    // .setContentIntent(PendingIntent.getBroadcast(context, 0, callIntent, 0));
+            NotificationManagerCompat.from(context).notify(0, builder.build());
             mp.start();
             TimeUnit.MINUTES.sleep(1);
         } catch (IOException | InterruptedException e) {
@@ -59,6 +62,6 @@ public class SMSListener extends BroadcastReceiver {
         }
         mp.stop();
         mp.release();
-        context.startActivity(callIntent);
+        context.startActivity(callIntent); //THIS IS NOT AN ERROR!!!
     }
 }
