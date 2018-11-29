@@ -1,6 +1,5 @@
 package at.tacticaldevc.panictrigger;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,7 @@ public class SMSListener extends BroadcastReceiver {
         if(Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction()))
         {
             Set<String> contacts = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet(context.getString(R.string.var_numbers_trigger), new HashSet<String>());
-            Set<String> msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet(context.getString(R.string.var_words_trigger), new HashSet<String>());
+            String msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getString(context.getString(R.string.var_words_trigger), "Panic");
             for(SmsMessage msg : Telephony.Sms.Intents.getMessagesFromIntent(intent))
             {
                 if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msg.getMessageBody()))
