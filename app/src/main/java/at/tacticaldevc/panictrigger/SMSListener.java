@@ -24,8 +24,8 @@ public class SMSListener extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if(Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction()))
         {
-            Set<String> contacts = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet("triggerNumbers", new HashSet<String>());
-            Set<String> msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet("triggerWords", new HashSet<String>());
+            Set<String> contacts = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet(context.getString(R.string.var_numbers_trigger), new HashSet<String>());
+            Set<String> msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet(context.getString(R.string.var_words_trigger), new HashSet<String>());
             for(SmsMessage msg : Telephony.Sms.Intents.getMessagesFromIntent(intent))
             {
                 if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msg.getMessageBody()))
@@ -48,7 +48,7 @@ public class SMSListener extends BroadcastReceiver {
             //TODO: Ringtone doesn't seem to loop...
             mp.setLooping(true);
             mp.prepare();
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "")
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Trigger")
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!")
                     .setPriority(NotificationCompat.PRIORITY_MAX);

@@ -42,8 +42,8 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.triggerButton:
-                Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet("notifyNumbers", new HashSet<String>());
-                String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString("keyword", "Panic");
+                Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
+                String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
                 SmsManager manager = SmsManager.getDefault();
                 for (String number : contacts)
                 {

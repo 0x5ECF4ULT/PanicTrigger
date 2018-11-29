@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">PanicTrigger</string>
     <string name="title_activity_contact_picker">ContactPickerActivity</string>
+    <string name="var_words_trigger">triggerWords</string>
+    <string name="var_words_keyword">keyword</string>
+    <string name="var_numbers_trigger">triggerNumbers</string>
+    <string name="var_numbers_notify">notifyNumbers</string>
 </resources>

@@ -26,12 +26,18 @@
             android:summary="that trigger YOUR alarm" >
             <intent android:action="android.intent.action.VIEW"
                 android:targetPackage="at.tacticaldevc.panictrigger"
-                android:targetClass="at.tacticaldevc.panictrigger.ContactPickerActivity"/>-
+                android:targetClass="at.tacticaldevc.panictrigger.ContactPickerActivity"
+                android:data="@string/var_numbers_trigger"/>
         </Preference>
         <Preference
             android:defaultValue="+1234567890"
             android:key="notifyNumbers"
             android:title="Notify numbers"
-            android:summary="to trigger THEIR alarm" />
+            android:summary="to trigger THEIR alarm" >
+            <intent android:action="android.intent.action.VIEW"
+                android:targetPackage="at.tacticaldevc.panictrigger"
+                android:targetClass="at.tacticaldevc.panictrigger.ContactPickerActivity"
+                android:data="@string/var_numbers_notify"/>
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
