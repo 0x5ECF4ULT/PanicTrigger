@@ -1,11 +1,6 @@
----
-
-
----
-
-<h1 id="panictrigger">PanicTrigger</h1>
-<p><strong>DISCLAIMER:</strong> I am NOT responsible for any damage caused by this app! If you come crying to me with tears in your eyes because you lost your job or something I WILL POINT MY FINGER AT YOU AND LAUGH! I am not responsible for ANYTHING! Period.</p>
-<h2 id="description">Description</h2>
+# PanicTrigger
+**DISCLAIMER:** I am NOT responsible for any damage caused by this app! If you come crying to me with tears in your eyes because you lost your job or something I WILL POINT MY FINGER AT YOU AND LAUGH! I am not responsible for ANYTHING! Period.
+## Description
 <p>PanicTrigger is an Android app which can help you in case of an emergency situation. In case of an emergency you tap on a big red button which causes the app to send out SMS to your preconfigured contacts without comfirmation. So don’t tap on the wrong button ;-)<br>
 PanicTrigger runs in the background and listens for incoming SMS this is why it needs the permission to read your SMS. Trust me I won’t read your SMS :)<br>
 If an ingoing SMS contains a specific word AND is from a specific number then an alarm will go off and call the sender of the SMS in one minute. Enough time for you to wake up and realize that the alarm has been triggered.<br>
@@ -38,5 +33,5 @@ Your contact(s) can trigger your alarm with a simple SMS and vice versa. If your
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br><span>PanicTrigger</span> by <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:attributionURL">tacticalDevC</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br>Permissions beyond the scope of this license may be available at <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:morePermissions">https://github.com/tacticalDevC/PanicTrigger</a>.</p>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0NTE1NzM1MzBdfQ==
+eyJoaXN0b3J5IjpbLTM5NDQ1Nzk4XX0=
 -->
