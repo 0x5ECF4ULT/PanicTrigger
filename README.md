@@ -34,9 +34,9 @@ Your contact(s) can trigger your alarm with a simple SMS and vice versa. If your
 <h2 id="donate">Donate</h2>
 <p><strong>Bitcoin:</strong> 1EVr5tm2kugffNy3RWPGFoug6X9v3GTxuJ<br>
 <strong>Monero:</strong> 47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j</p>
-<h2 id="license">License</h2>
+<h2 id="license">[License](LICENSE)</h2>
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br><span>PanicTrigger</span> by <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:attributionURL">tacticalDevC</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br>Permissions beyond the scope of this license may be available at <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:morePermissions">https://github.com/tacticalDevC/PanicTrigger</a>.</p>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQwNDYyOTE0Nl19
+eyJoaXN0b3J5IjpbLTE0NTE1NzM1MzBdfQ==
 -->
