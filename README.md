@@ -23,9 +23,9 @@ Your contact(s) can trigger your alarm with a simple SMS and vice versa. If your
 ## Donate
 **Bitcoin:** 1EVr5tm2kugffNy3RWPGFoug6X9v3GTxuJ
 **Monero:** 47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j
-<h2 id="license">[License](LICENSE)</h2>
+## [License](LICENSE)
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br><span>PanicTrigger</span> by <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:attributionURL">tacticalDevC</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br>Permissions beyond the scope of this license may be available at <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:morePermissions">https://github.com/tacticalDevC/PanicTrigger</a>.</p>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU5Mzg4NTM0OF19
+eyJoaXN0b3J5IjpbLTE5ODkwMzgyMTJdfQ==
 -->
