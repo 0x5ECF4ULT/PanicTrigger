@@ -28,7 +28,7 @@ If you want to contribute to this project please refer to "How to [contribute](C
 - ```android.permission.ACCESS_COARSE_LOCATION``` is needed for a quick discovery where you are (I WON'T TRACK YOU)
 - ```android.permission.ACCESS_FINE_LOCATION``` if set, try to discover your exact location (I WON'T TRACK YOU)
 - ```android.permission.CALL_PHONE``` is needed to call the sender of the "Panic"-SMS
-- ``````
+- ```android.permission.READ_CONTACTS``` is needed for picking contacts
 ## Links
  - [License](LICENSE)
  - [How to contribute](CONTRIBUTING.md)
@@ -40,6 +40,6 @@ If you want to contribute to this project please refer to "How to [contribute](C
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br><span>PanicTrigger</span> by <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:attributionURL">tacticalDevC</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br>Permissions beyond the scope of this license may be available at <a href="https://github.com/tacticalDevC/PanicTrigger" rel="cc:morePermissions">https://github.com/tacticalDevC/PanicTrigger</a>.</p>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyOTc3NDY3MDgsLTE4Mjk1NTc4NzksLT
-g2MjcxODQ5OV19
+eyJoaXN0b3J5IjpbMTY3MDI3MzY2NCwtMTgyOTU1Nzg3OSwtOD
+YyNzE4NDk5XX0=
 -->
