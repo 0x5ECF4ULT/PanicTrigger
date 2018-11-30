@@ -25,14 +25,14 @@ If you want to contribute to this project please refer to "How to [contribute](C
 ## Permissions
 - ```android.permission.RECEIVE_SMS``` is needed to receive the keyword for triggering your alarm
 - ```android.permission.SEND_SMS``` is needed to send the keyword for triggering their alarm
-- ```android.permission.ACCESS_COARSE_LOCATION``` is needed for a quick discovery where you are (I WON'T TRACK YOU)
-- ```android.permission.ACCESS_FINE_LOCATION``` if set, try to discover your exact location (I WON'T TRACK YOU)
+- ```android.permission.ACCESS_COARSE_LOCATION``` is needed for a quick discovery where you are (I WON'T TRACK YOU) (Not used yet)
+- ```android.permission.ACCESS_FINE_LOCATION``` if set, try to discover your exact location (I WON'T TRACK YOU) (Not used yet)
 - ```android.permission.CALL_PHONE``` is needed to call the sender of the "Panic"-SMS
-- ```android.permission.READ_CONTACTS``` is needed for picking contacts
+- ```android.permission.READ_CONTACTS``` is needed for picking contacts (Not used yet)
 ## Links
  - [License](LICENSE)
  - [How to contribute](CONTRIBUTING.md)
- - [PR template](PULL_REQUEST_TEMPLATE)
+ - [PR template](PULL_REQUEST_TEMPLATE.md)
 ## Donate
 **Bitcoin:** 1EVr5tm2kugffNy3RWPGFoug6X9v3GTxuJ<br/>
 **Monero:** 47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j
