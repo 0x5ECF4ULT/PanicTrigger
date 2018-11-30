@@ -28,6 +28,7 @@ If you want to contribute to this project please refer to "How to [contribute](C
 - ```android.permission.ACCESS_COARSE_LOCATION``` is needed for a quick discovery where you are (I WON'T TRACK YOU) (Not used yet)
 - ```android.permission.ACCESS_FINE_LOCATION``` if set, try to discover your exact location (I WON'T TRACK YOU) (Not used yet)
 - ```android.permission.CALL_PHONE``` is needed to call the sender of the "Panic"-SMS
+- ```android.permission.CALL_PRIVILEGED``` is needed for calling emergency services
 - ```android.permission.READ_CONTACTS``` is needed for picking contacts (Not used yet)
 ## Links
  - [License](LICENSE)
