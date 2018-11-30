@@ -1,12 +1,16 @@
 package at.tacticaldevc.panictrigger;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +39,59 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                     Manifest.permission.READ_CONTACTS
             }, 1);
         }
+
+        if(!getSharedPreferences("conf", MODE_PRIVATE).getBoolean("firstStartDone", false))
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Oh, hey there!")
+                    .setMessage("Looks like you are using my app! :)\n" +
+                            "Welcome! First I will tell you a little bit about the purpose of this app.\n" +
+                            "It has been made for emergency situations where you may need help or just want " +
+                            "to alarm your friends. This is especially useful e.g. if you feel like someone " +
+                            "is following you and don't want to call the police because it could cause your " +
+                            "follower to attack you.\n" +
+                            "Another example would be if you don't feel good and can't really move you only " +
+                            "need to tap this shiny red button.\n\n" +
+                            "Got it? Good! :-)\n" +
+                            "In fact this app does nothing else than sending out a special SMS to your configured " +
+                            "contacts. This triggers an alarm on their side for a minute. At this time of " +
+                            "development they will automatically call you after the alarm is over. The only " +
+                            "requirement is that your opponent has this app installed otherwise they will just " +
+                            "see a SMS with human-readable content.\n" +
+                            "Now, let's configure some contacts to notify!")
+                    .setPositiveButton("Let's do it!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(TriggerActivity.this, SettingsActivity.class));
+                        }
+                    })
+                    .setNegativeButton("No thanks.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new AlertDialog.Builder(TriggerActivity.this)
+                                    .setTitle("!!! WARNING !!!")
+                                    .setMessage("You decided to not configure PanicTrigger. This will " +
+                                            "cause the app to call emergency services if you tap on the " +
+                                            "big red button!\n\n" +
+                                            "Are you SURE you don't want to configure contacts?")
+                                    .setPositiveButton("NO! I tapped the wrong button.", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(TriggerActivity.this, "Alright! Let's configure some things...", Toast.LENGTH_LONG).show();
+                                            startActivity(new Intent(TriggerActivity.this, SettingsActivity.class));
+                                        }
+                                    })
+                                    .setNegativeButton("Yes.", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                        }
+                    })
+                    .show();
+            getSharedPreferences("conf", MODE_PRIVATE).edit().putBoolean("firstStartDone", true).apply();
+        }
     }
 
     @Override
@@ -43,6 +100,11 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         {
             case R.id.triggerButton:
                 Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
+                if(contacts.isEmpty())
+                {
+                    Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
+                    startActivity(emergService);
+                }
                 String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
                 SmsManager manager = SmsManager.getDefault();
                 for (String number : contacts)
