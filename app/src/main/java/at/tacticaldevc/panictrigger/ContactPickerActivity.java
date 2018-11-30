@@ -13,6 +13,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -97,6 +99,23 @@ public class ContactPickerActivity extends AppCompatActivity {
         {
             aa.add(number);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_contactpicker, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Set<String> newValues = new HashSet<>();
+        for(int i = 0; i < lv.getAdapter().getCount(); i++)
+        {
+            newValues.add((String) lv.getAdapter().getItem(i));
+        }
+        prefs.edit().putStringSet(getString(R.string.var_numbers_trigger), newValues).putStringSet(getString(R.string.var_numbers_notify), newValues).apply();
+        return true;
     }
 
     @Override

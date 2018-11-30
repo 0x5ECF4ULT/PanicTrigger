@@ -2,7 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="Words">
-
         <EditTextPreference
             android:defaultValue="Panic"
             android:key="triggerWords"
@@ -20,8 +19,6 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Numbers">
         <Preference
-            android:defaultValue="+1234567890"
-            android:key="triggerNumbers"
             android:title="Trigger numbers"
             android:summary="that trigger YOUR alarm" >
             <intent android:action="android.intent.action.VIEW"
@@ -30,8 +27,6 @@
                 android:data="@string/var_numbers_trigger"/>
         </Preference>
         <Preference
-            android:defaultValue="+1234567890"
-            android:key="notifyNumbers"
             android:title="Notify numbers"
             android:summary="to trigger THEIR alarm" >
             <intent android:action="android.intent.action.VIEW"
