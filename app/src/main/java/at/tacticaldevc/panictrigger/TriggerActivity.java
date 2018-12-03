@@ -1,9 +1,12 @@
 package at.tacticaldevc.panictrigger;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -120,4 +123,10 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+    /*private Location getCurrentLocation()
+    {
+        LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, new PendingIntent());
+    }*/
 }

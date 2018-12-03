@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
 import java.io.IOException;
@@ -38,8 +39,11 @@ public class SMSListener extends BroadcastReceiver {
 
     private void triggerAlarm(Context context, String address) {
         AudioManager audioManager = ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
+        SmsManager smsManager = SmsManager.getDefault();
         MediaPlayer mp = new MediaPlayer();
         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address));
+
+        smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
 
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM, audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0);
         try {

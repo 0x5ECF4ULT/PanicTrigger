@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="at.tacticaldevc.panictrigger">
 
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps"/>
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CALL_PRIVILEGED"/>
     <!--<uses-permission android:name="android.permission.READ_CONTACTS"/>-->
@@ -20,7 +21,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".TriggerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +41,7 @@
         <activity
             android:name=".ContactPickerActivity"
             android:label="@string/title_activity_contact_picker"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
