@@ -124,6 +124,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         {
             case R.id.triggerButton:
                 getCurrentLocationAndPanic();
+                break;
             case R.id.configure:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
@@ -154,7 +155,12 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
     {
         Location currLoc;
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+        if(locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+        else if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+        else
+            sendOutPanic(locManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
     }
 
     @Override

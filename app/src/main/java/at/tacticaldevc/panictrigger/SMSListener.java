@@ -28,16 +28,17 @@ public class SMSListener extends BroadcastReceiver {
             String msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getString(context.getString(R.string.var_words_trigger), "Panic");
             for(SmsMessage msg : Telephony.Sms.Intents.getMessagesFromIntent(intent))
             {
-                if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msg.getMessageBody().split("\n")[0]))
+                String[] msgParts = msg.getMessageBody().split("\n");
+                if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msgParts[0]))
                 {
-                    triggerAlarm(context, msg.getOriginatingAddress());
+                    triggerAlarm(context, msg.getOriginatingAddress(), msgParts[1], msgParts[2]);
                     break;
                 }
             }
         }
     }
 
-    private void triggerAlarm(Context context, String address) {
+    private void triggerAlarm(Context context, String address, String latitude, String longtitude) {
         AudioManager audioManager = ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
         SmsManager smsManager = SmsManager.getDefault();
         MediaPlayer mp = new MediaPlayer();
@@ -53,7 +54,8 @@ public class SMSListener extends BroadcastReceiver {
             mp.prepare();
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Trigger")
                     .setContentTitle("!!! PANIC !!!")
-                    .setContentText(address + "triggered alarm! Calling in 1 minute!")
+                    .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
+                            "Sender is at " + latitude + "; " + longtitude)
                     .setPriority(NotificationCompat.PRIORITY_MAX);
                     //TODO: Make PendingIntent interrupt the countdown and call immediately
                     // .setContentIntent(PendingIntent.getBroadcast(context, 0, callIntent, 0));
