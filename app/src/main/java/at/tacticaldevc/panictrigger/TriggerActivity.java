@@ -48,6 +48,25 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         if(!getSharedPreferences("conf", MODE_PRIVATE).getBoolean("firstStartDone", false))
         {
             new AlertDialog.Builder(this)
+                    .setTitle("DISCLAIMER")
+                    .setMessage("I am NOT responsible for any damage caused by this app! " +
+                            "If you come crying to me with tears in your eyes because you lost your " +
+                            "job or something I WILL POINT MY FINGER AT YOU AND LAUGH! " +
+                            "I am not responsible for ANYTHING! Period.\n\n" +
+                            "Do you agree with that?\n" +
+                            "Note: You need to agree to use this app!")
+                    .setPositiveButton("Yes.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    })
+                    .setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+            new AlertDialog.Builder(this)
                     .setTitle("Oh, hey there!")
                     .setMessage("Looks like you are using my app! :)\n" +
                             "Welcome! First I will tell you a little bit about the purpose of this app.\n" +
