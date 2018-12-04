@@ -1,11 +1,11 @@
 package at.tacticaldevc.panictrigger;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TriggerActivity extends AppCompatActivity implements View.OnClickListener
+public class TriggerActivity extends AppCompatActivity implements View.OnClickListener, LocationListener
 {
 
     @Override
@@ -123,19 +123,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.triggerButton:
-                Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
-                if(contacts.isEmpty())
-                {
-                    Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
-                    startActivity(emergService);
-                }
-                String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
-                SmsManager manager = SmsManager.getDefault();
-                for (String number : contacts)
-                {
-                    manager.sendTextMessage(number, null, keyword, null, null);
-                }
-                break;
+                getCurrentLocationAndPanic();
             case R.id.configure:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
@@ -143,9 +131,49 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    /*private Location getCurrentLocation()
+    private void sendOutPanic(Location loc)
     {
+        Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
+        if(contacts.isEmpty())
+        {
+            Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
+            startActivity(emergService);
+        }
+        String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
+        SmsManager manager = SmsManager.getDefault();
+        for (String number : contacts)
+        {
+            manager.sendTextMessage(number, null,
+                    keyword + "\n" +
+                    loc.getLatitude() + "\n" +
+                    loc.getLongitude(), null, null);
+        }
+    }
+
+    private void getCurrentLocationAndPanic()
+    {
+        Location currLoc;
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, new PendingIntent());
-    }*/
+        locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        sendOutPanic(location);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
