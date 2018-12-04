@@ -28,7 +28,7 @@ public class SMSListener extends BroadcastReceiver {
             String msgs = context.getSharedPreferences("conf", Context.MODE_PRIVATE).getString(context.getString(R.string.var_words_trigger), "Panic");
             for(SmsMessage msg : Telephony.Sms.Intents.getMessagesFromIntent(intent))
             {
-                if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msg.getMessageBody()))
+                if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msg.getMessageBody().split("\n")[0]))
                 {
                     triggerAlarm(context, msg.getOriginatingAddress());
                     break;
