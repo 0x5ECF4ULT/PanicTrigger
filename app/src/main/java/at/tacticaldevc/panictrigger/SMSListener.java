@@ -1,5 +1,7 @@
 package at.tacticaldevc.panictrigger;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,14 +51,18 @@ public class SMSListener extends BroadcastReceiver {
                 .putExtra("long", Double.parseDouble(longitude));
 
         smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel ch = new NotificationChannel("Trigger", "", NotificationManager.IMPORTANCE_HIGH);
+        }
 
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM, audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0);
         try {
-            mp.setDataSource(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+            mp.setDataSource(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
             //TODO: Ringtone doesn't seem to loop...
             mp.setLooping(true);
             mp.prepare();
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Trigger")
+                    .setSmallIcon(R.drawable.ic_sms_failed)
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
                             "Sender is at " + latitude + "; " + longitude)
