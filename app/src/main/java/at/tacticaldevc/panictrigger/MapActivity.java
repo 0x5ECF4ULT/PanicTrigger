@@ -1,9 +1,14 @@
 package at.tacticaldevc.panictrigger;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 public class MapActivity extends AppCompatActivity {
     private MapView map;
@@ -13,7 +18,15 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
 
         map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         map.setMultiTouchControls(true);
+
+        Intent i = getIntent();
+        Marker pos = new Marker(map);
+        pos.setPosition(new GeoPoint(i.getDoubleExtra("latitude", 0d), i.getDoubleExtra("longitude", 0d)));
+        map.getOverlays().add(pos);
+
+        //IMapController controller = map.getController(); Usage?
     }
 
     @Override

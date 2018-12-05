@@ -39,11 +39,14 @@ public class SMSListener extends BroadcastReceiver {
         }
     }
 
-    private void triggerAlarm(Context context, String address, String latitude, String longtitude) {
+    private void triggerAlarm(Context context, String address, String latitude, String longitude) {
         AudioManager audioManager = ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
         SmsManager smsManager = SmsManager.getDefault();
         MediaPlayer mp = new MediaPlayer();
         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address));
+        Intent mapIntent = new Intent(context, MapActivity.class)
+                .putExtra("lat", Double.parseDouble(latitude))
+                .putExtra("long", Double.parseDouble(longitude));
 
         smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
 
@@ -56,9 +59,10 @@ public class SMSListener extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Trigger")
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
-                            "Sender is at " + latitude + "; " + longtitude)
+                            "Sender is at " + latitude + "; " + longitude)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .addAction(R.drawable.ic_call, "", PendingIntent.getActivity(context, 0, callIntent, 0));
+                    .addAction(R.drawable.ic_call, "Call now!", PendingIntent.getActivity(context, 0, callIntent, 0))
+                    .setContentIntent(PendingIntent.getActivity(context, 0, mapIntent, 0));
             NotificationManagerCompat.from(context).notify(0, builder.build());
             mp.start();
             TimeUnit.MINUTES.sleep(1);
