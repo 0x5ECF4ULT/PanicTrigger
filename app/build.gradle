@@ -30,8 +30,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation ('de.westnordost:osmapi:3.3')
-            {
-                exclude group: 'net.sf.kxml', module: 'kxml2'
-            }
+    implementation 'org.osmdroid:osmdroid-android:6.0.3'
 }
