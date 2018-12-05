@@ -16,12 +16,12 @@ If you want to contribute to this project please refer to "How to [contribute](C
  - Simple interface
  - Triggers an alarm on your friends phone (He/She needs to have this app too)
  - More features coming soon…
-## Coming soon…
  - Send last known GPS coordinates within trigger message
+ - In case there are no contacts configured call emergency services
+## Coming soon…
  - GPS tracker (send updated coordinates ever n minutes unless canceled)
  - Root functionality
  - THEMES!!!
- - In case there are no contacts configured call emergency services
 ## Permissions
 - ```android.permission.RECEIVE_SMS``` is needed to receive the keyword for triggering your alarm
 - ```android.permission.SEND_SMS``` is needed to send the keyword for triggering their alarm
