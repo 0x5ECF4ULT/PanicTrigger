@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -41,18 +42,19 @@ public class SMSListener extends BroadcastReceiver {
         }
     }
 
-    private void triggerAlarm(Context context, String address, String latitude, String longitude) {
+    private void triggerAlarm(final Context context, String address, String latitude, String longitude) {
         AudioManager audioManager = ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
         SmsManager smsManager = SmsManager.getDefault();
-        MediaPlayer mp = new MediaPlayer();
-        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address));
-        Intent mapIntent = new Intent(context, MapActivity.class)
+        final MediaPlayer mp = new MediaPlayer();
+        final PendingIntent callIntent = PendingIntent.getActivity(context, 0, new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address)), PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent mapIntent = PendingIntent.getActivity(context, 0, new Intent(context, MapActivity.class)
                 .putExtra("lat", Double.parseDouble(latitude))
-                .putExtra("long", Double.parseDouble(longitude));
+                .putExtra("long", Double.parseDouble(longitude)), PendingIntent.FLAG_ONE_SHOT);
 
         smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel ch = new NotificationChannel("Trigger", "", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel ch = new NotificationChannel("Trigger", "Trigger", NotificationManager.IMPORTANCE_HIGH);
+            ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(ch);
         }
 
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM, audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0);
@@ -67,16 +69,25 @@ public class SMSListener extends BroadcastReceiver {
                     .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
                             "Sender is at " + latitude + "; " + longitude)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .addAction(R.drawable.ic_call, "Call now!", PendingIntent.getActivity(context, 0, callIntent, 0))
-                    .setContentIntent(PendingIntent.getActivity(context, 0, mapIntent, 0));
+                    .addAction(R.drawable.ic_call, "Call now!", callIntent)
+                    .setContentIntent(mapIntent);
             NotificationManagerCompat.from(context).notify(0, builder.build());
-            mp.start();
-            TimeUnit.MINUTES.sleep(1);
-        } catch (IOException | InterruptedException e) {
+            //mp.start();
+            //TimeUnit.MINUTES.sleep(1);
+            Runnable cntDown = new Runnable() {
+                @Override
+                public void run() {
+                    NotificationManagerCompat.from(context).cancel(0);
+                    mp.stop();
+                    mp.release();
+                    try {
+                        callIntent.send();
+                    } catch (PendingIntent.CanceledException e) {}
+                }
+            };
+            new Handler().postDelayed(cntDown, 60000);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        mp.stop();
-        mp.release();
-        context.startActivity(callIntent); //THIS IS NOT AN ERROR!!!
     }
 }

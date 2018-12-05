@@ -22,11 +22,14 @@ public class MapActivity extends AppCompatActivity {
         map.setMultiTouchControls(true);
 
         Intent i = getIntent();
+        GeoPoint geo = new GeoPoint(i.getDoubleExtra("latitude", 0d), i.getDoubleExtra("longitude", 0d));
         Marker pos = new Marker(map);
-        pos.setPosition(new GeoPoint(i.getDoubleExtra("latitude", 0d), i.getDoubleExtra("longitude", 0d)));
+        pos.setPosition(geo);
         map.getOverlays().add(pos);
 
-        //IMapController controller = map.getController(); Usage?
+        IMapController controller = map.getController();
+        controller.setCenter(geo);
+        controller.setZoom(10d);
     }
 
     @Override
