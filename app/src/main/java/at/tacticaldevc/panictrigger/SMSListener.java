@@ -1,5 +1,6 @@
 package at.tacticaldevc.panictrigger;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -56,9 +57,8 @@ public class SMSListener extends BroadcastReceiver {
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
                             "Sender is at " + latitude + "; " + longtitude)
-                    .setPriority(NotificationCompat.PRIORITY_MAX);
-                    //TODO: Make PendingIntent interrupt the countdown and call immediately
-                    // .setContentIntent(PendingIntent.getBroadcast(context, 0, callIntent, 0));
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .addAction(R.drawable.ic_call, "", PendingIntent.getActivity(context, 0, callIntent, 0));
             NotificationManagerCompat.from(context).notify(0, builder.build());
             mp.start();
             TimeUnit.MINUTES.sleep(1);

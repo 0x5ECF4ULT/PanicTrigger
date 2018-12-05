@@ -32,7 +32,9 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                 checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.CALL_PRIVILEGED) != PackageManager.PERMISSION_GRANTED)
+                checkSelfPermission(Manifest.permission.CALL_PRIVILEGED) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{
                     Manifest.permission.RECEIVE_SMS,
@@ -42,30 +44,13 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                     Manifest.permission.CALL_PHONE,
                     Manifest.permission.READ_CONTACTS,
                     Manifest.permission.CALL_PRIVILEGED,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
             }, 1);
         }
 
         if(!getSharedPreferences("conf", MODE_PRIVATE).getBoolean("firstStartDone", false))
         {
-            new AlertDialog.Builder(this)
-                    .setTitle("DISCLAIMER")
-                    .setMessage("I am NOT responsible for any damage caused by this app! " +
-                            "If you come crying to me with tears in your eyes because you lost your " +
-                            "job or something I WILL POINT MY FINGER AT YOU AND LAUGH! " +
-                            "I am not responsible for ANYTHING! Period.\n\n" +
-                            "Do you agree with that?\n" +
-                            "Note: You need to agree to use this app!")
-                    .setPositiveButton("Yes.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    })
-                    .setNegativeButton("No.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .show();
             new AlertDialog.Builder(this)
                     .setTitle("Oh, hey there!")
                     .setMessage("Looks like you are using my app! :)\n" +
@@ -111,6 +96,25 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                                         }
                                     })
                                     .show();
+                        }
+                    })
+                    .show();
+            new AlertDialog.Builder(this)
+                    .setTitle("DISCLAIMER")
+                    .setMessage("I am NOT responsible for any damage caused by this app! " +
+                            "If you come crying to me with tears in your eyes because you lost your " +
+                            "job or something I WILL POINT MY FINGER AT YOU AND LAUGH! " +
+                            "I am not responsible for ANYTHING! Period.\n\n" +
+                            "Do you agree with that?\n" +
+                            "Note: You need to agree to use this app!")
+                    .setPositiveButton("Yes.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    })
+                    .setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
                         }
                     })
                     .show();
