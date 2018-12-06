@@ -111,7 +111,9 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                             "Note: You need to agree to use this app!")
                     .setPositiveButton("Yes.", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {}
+                        public void onClick(DialogInterface dialog, int which) {
+                            getSharedPreferences("conf", MODE_PRIVATE).edit().putBoolean("firstStartDone", true).apply();
+                        }
                     })
                     .setNegativeButton("No.", new DialogInterface.OnClickListener() {
                         @Override
@@ -120,7 +122,6 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     })
                     .show();
-            getSharedPreferences("conf", MODE_PRIVATE).edit().putBoolean("firstStartDone", true).apply();
         }
     }
 
@@ -141,11 +142,6 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
     private void sendOutPanic(Location loc)
     {
         Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
-        if(contacts.isEmpty())
-        {
-            Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
-            startActivity(emergService);
-        }
         String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
         SmsManager manager = SmsManager.getDefault();
         for (String number : contacts)
@@ -159,6 +155,12 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
 
     private void getCurrentLocationAndPanic()
     {
+        if(callEmergServices())
+        {
+            Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
+            startActivity(emergService);
+            return;
+        }
         Location currLoc;
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if(locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
@@ -167,6 +169,12 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
             locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
         else
             sendOutPanic(locManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
+    }
+
+    private boolean callEmergServices()
+    {
+        Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
+        return contacts.isEmpty();
     }
 
     @Override

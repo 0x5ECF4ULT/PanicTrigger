@@ -72,8 +72,7 @@ public class SMSListener extends BroadcastReceiver {
                     .addAction(R.drawable.ic_call, "Call now!", callIntent)
                     .setContentIntent(mapIntent);
             NotificationManagerCompat.from(context).notify(0, builder.build());
-            //mp.start();
-            //TimeUnit.MINUTES.sleep(1);
+            mp.start();
             Runnable cntDown = new Runnable() {
                 @Override
                 public void run() {
