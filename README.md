@@ -1,5 +1,10 @@
 # PanicTrigger
 **DISCLAIMER:** I am NOT responsible for any damage caused by this app! If you come crying to me with tears in your eyes because you lost your job or something I WILL POINT MY FINGER AT YOU AND LAUGH! I am not responsible for ANYTHING! Period.
+
+[<img src="https://f-droid.org/badge/get-it-on.png" 
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/packages/at.tacticaldevc.panictrigger/)
+
 ## Description
 PanicTrigger is an Android app which can help you in case of an emergency situation. In case of an emergency you tap on a big red button which causes the app to send out SMS to your preconfigured contacts without comfirmation. So don’t tap on the wrong button ;-)
 PanicTrigger runs in the background and listens for incoming SMS this is why it needs the permission to read your SMS. Trust me I won’t read your SMS :)<br/>
@@ -40,10 +45,10 @@ If you want to contribute to this project please refer to "How to [contribute](C
  
  - [osmdroid](https://github.com/osmdroid/osmdroid)
 ## Donate
-**Bitcoin:** 1EVr5tm2kugffNy3RWPGFoug6X9v3GTxuJ<br/>
-**Monero:** 47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j
+**Bitcoin:** ```1EVr5tm2kugffNy3RWPGFoug6X9v3GTxuJ```<br/>
+**Monero:** ```47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j```
 ## License
-Got to [license](LICENSE)
+Go to [license](LICENSE)
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbNzIyMzM3MjU4XX0=
