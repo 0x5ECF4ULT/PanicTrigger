@@ -20,7 +20,6 @@ import android.telephony.SmsMessage;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class SMSListener extends BroadcastReceiver {
 
@@ -49,7 +48,7 @@ public class SMSListener extends BroadcastReceiver {
         final PendingIntent callIntent = PendingIntent.getActivity(context, 0, new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address)), PendingIntent.FLAG_ONE_SHOT);
         PendingIntent mapIntent = PendingIntent.getActivity(context, 0, new Intent(context, MapActivity.class)
                 .putExtra("lat", Double.parseDouble(latitude))
-                .putExtra("long", Double.parseDouble(longitude)), PendingIntent.FLAG_ONE_SHOT);
+                .putExtra("long", Double.parseDouble(longitude)), PendingIntent.FLAG_UPDATE_CURRENT);
 
         smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
