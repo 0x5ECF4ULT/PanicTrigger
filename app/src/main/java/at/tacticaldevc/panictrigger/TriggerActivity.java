@@ -146,10 +146,11 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         SmsManager manager = SmsManager.getDefault();
         for (String number : contacts)
         {
-            manager.sendTextMessage(number, null,
-                    keyword + "\n" +
-                    loc.getLatitude() + "\n" +
-                    loc.getLongitude(), null, null);
+            StringBuilder sb = new StringBuilder(keyword);
+            if(loc != null)
+                sb.append("\n" + loc.getLatitude() + "\n" + loc.getLongitude());
+
+            manager.sendTextMessage(number, null, sb.toString(), null, null);
         }
     }
 
@@ -163,12 +164,20 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         }
         Location currLoc;
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if(locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-        else if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-        else
-            sendOutPanic(locManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
+        try
+        {
+            if(locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+                locManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+            else if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+            else
+                sendOutPanic(locManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "GPS fix could be acquired. Please check your settings!", Toast.LENGTH_LONG).show();
+            sendOutPanic(null);
+        }
     }
 
     private boolean callEmergServices()
