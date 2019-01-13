@@ -34,8 +34,15 @@ public class SMSListener extends BroadcastReceiver {
                 String[] msgParts = msg.getMessageBody().split("\n");
                 if(contacts.contains(msg.getOriginatingAddress()) && msgs.contains(msgParts[0]))
                 {
-                    triggerAlarm(context, msg.getOriginatingAddress(), msgParts[1], msgParts[2]);
-                    break;
+                    try
+                    {
+                        triggerAlarm(context, msg.getOriginatingAddress(), msgParts[1], msgParts[2]);
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        triggerAlarm(context, msg.getOriginatingAddress(), null, null);
+                    }
                 }
             }
         }
@@ -46,9 +53,11 @@ public class SMSListener extends BroadcastReceiver {
         SmsManager smsManager = SmsManager.getDefault();
         final MediaPlayer mp = new MediaPlayer();
         final PendingIntent callIntent = PendingIntent.getActivity(context, 0, new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + address)), PendingIntent.FLAG_ONE_SHOT);
-        PendingIntent mapIntent = PendingIntent.getActivity(context, 0, new Intent(context, MapActivity.class)
-                .putExtra("lat", Double.parseDouble(latitude))
-                .putExtra("long", Double.parseDouble(longitude)), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent mapIntent = null;
+        if(latitude != null && longitude != null)
+            mapIntent = PendingIntent.getActivity(context, 0, new Intent(context, MapActivity.class)
+                    .putExtra("lat", Double.parseDouble(latitude))
+                    .putExtra("long", Double.parseDouble(longitude)), PendingIntent.FLAG_UPDATE_CURRENT);
 
         smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -66,7 +75,7 @@ public class SMSListener extends BroadcastReceiver {
                     .setSmallIcon(R.drawable.ic_sms_failed)
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
-                            "Sender is at " + latitude + "; " + longitude)
+                            latitude != null && longitude != null ? "Sender is at " + latitude + "; " + longitude: "")
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .addAction(R.drawable.ic_call, "Call now!", callIntent)
                     .setContentIntent(mapIntent);
