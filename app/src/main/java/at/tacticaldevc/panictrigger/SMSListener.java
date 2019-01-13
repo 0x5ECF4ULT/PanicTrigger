@@ -75,7 +75,7 @@ public class SMSListener extends BroadcastReceiver {
                     .setSmallIcon(R.drawable.ic_sms_failed)
                     .setContentTitle("!!! PANIC !!!")
                     .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
-                            latitude != null && longitude != null ? "Sender is at " + latitude + "; " + longitude: "")
+                            latitude != null && longitude != null ? "Sender is at " + latitude + "; " + longitude : "")
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .addAction(R.drawable.ic_call, "Call now!", callIntent)
                     .setContentIntent(mapIntent);
