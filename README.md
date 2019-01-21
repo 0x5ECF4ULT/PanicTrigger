@@ -45,7 +45,7 @@ If you want to contribute to this project please refer to "How to [contribute](C
  
  - [osmdroid](https://github.com/osmdroid/osmdroid)
 ## Donate
-**Bitcoin:** ```1EVr5tm2kugffNy3RWPGFoug6X9v3GTxuJ```<br/>
+**Bitcoin:** ```bc1q7my587hlr375h440fydljqaut02wr5jxf09fzw```<br/>
 **Monero:** ```47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j```
 ## License
 Go to [license](LICENSE)
