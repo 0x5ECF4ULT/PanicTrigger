@@ -1,35 +1,36 @@
 package at.tacticaldevc.panictrigger;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import at.tacticaldevc.panictrigger.contactList.Contact;
+import at.tacticaldevc.panictrigger.contactList.ContactAdapter;
 
 public class ContactPickerActivity extends AppCompatActivity {
 
-    private ListView lv;
+    private RecyclerView rv;
     private SharedPreferences prefs;
     private String mode;
+
+    private List<Contact> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,32 +40,14 @@ public class ContactPickerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Pick contacts");
 
+        prefs = getSharedPreferences("conf", MODE_PRIVATE);
         mode = getIntent().getDataString();
 
-        final ArrayAdapter<String> aa = new ArrayAdapter<>(this, R.layout.activity_listview);
-        lv = findViewById(R.id.contactsList);
-        prefs = getSharedPreferences("conf", MODE_PRIVATE);
-        lv.setAdapter(aa);
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                new AlertDialog.Builder(ContactPickerActivity.this)
-                        .setTitle("Confirm")
-                        .setMessage("Would you really like to delete this entry?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                aa.remove(aa.getItem(position));
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {}
-                        })
-                        .show();
-                return true;
-            }
-        });
+        list = new ArrayList<>();
+        rv = findViewById(R.id.contactList);
+        rv.setAdapter(new ContactAdapter(list));
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setItemAnimator(new DefaultItemAnimator());
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +93,7 @@ public class ContactPickerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Set<String> newValues = new HashSet<>();
-        for(int i = 0; i < lv.getAdapter().getCount(); i++)
+        for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
             newValues.add((String) lv.getAdapter().getItem(i));
         }
@@ -123,7 +106,7 @@ public class ContactPickerActivity extends AppCompatActivity {
         super.onDestroy();
 
         Set<String> newValues = new HashSet<>();
-        for(int i = 0; i < lv.getAdapter().getCount(); i++)
+        for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
             newValues.add((String) lv.getAdapter().getItem(i));
         }

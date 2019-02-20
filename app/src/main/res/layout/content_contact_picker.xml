@@ -8,14 +8,8 @@
     tools:context=".ContactPickerActivity"
     tools:showIn="@layout/activity_contact_picker">
 
-    <ListView
-        android:id="@+id/contactsList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:divider="@color/colorBlackAccent"
-        android:dividerHeight="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/contactList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>
