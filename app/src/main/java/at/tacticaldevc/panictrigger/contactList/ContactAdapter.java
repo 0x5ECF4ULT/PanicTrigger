@@ -19,7 +19,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
     }
 
     public ContactItem onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new ContactItem(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.content_list_item, viewGroup));
+        return new ContactItem(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.content_list_item, viewGroup, false));
     }
 
     public void onBindViewHolder(ContactItem contactItem, int i) {

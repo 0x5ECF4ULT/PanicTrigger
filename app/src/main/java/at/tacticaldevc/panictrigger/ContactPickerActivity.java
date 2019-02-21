@@ -75,7 +75,10 @@ public class ContactPickerActivity extends AppCompatActivity {
         for(String contactString : prefs.getStringSet(mode, new HashSet<String>()))
         {
             String[] parts = contactString.split(";");
-            list.add(new Contact(parts[1], parts[0]));
+            if(parts.length == 2)
+                list.add(new Contact(parts[1], parts[0]));
+            else
+                list.add(new Contact("", parts[0]));
         }
         rv.getAdapter().notifyDataSetChanged();
     }
