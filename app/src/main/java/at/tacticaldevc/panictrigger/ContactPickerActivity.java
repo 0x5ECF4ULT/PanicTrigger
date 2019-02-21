@@ -10,11 +10,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -57,31 +56,28 @@ public class ContactPickerActivity extends AppCompatActivity {
                         .setType(ContactsContract.Contacts.CONTENT_TYPE);
                 startActivityForResult(contacts, 0);*/
 
-                final EditText input = new EditText(ContactPickerActivity.this);
+                final View content = getLayoutInflater().inflate(R.layout.content_dialog_contact_entry, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(ContactPickerActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_PHONE);
-                builder.setView(input);
+
+                builder.setView(content);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        aa.add(input.getText().toString());
+                        list.add(new Contact(((TextView)content.findViewById(R.id.contact_number)).getText().toString(), ((TextView)content.findViewById(R.id.contact_name)).getText().toString()));
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
+                builder.setNegativeButton("Cancel", null);
                 builder.show();
             }
         });
 
         //Import data from shared prefs
-        for(String number : prefs.getStringSet(mode, new HashSet<String>()))
+        for(String contactString : prefs.getStringSet(mode, new HashSet<String>()))
         {
-            aa.add(number);
+            String[] parts = contactString.split(";");
+            list.add(new Contact(parts[1], parts[0]));
         }
+        rv.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -95,7 +91,8 @@ public class ContactPickerActivity extends AppCompatActivity {
         Set<String> newValues = new HashSet<>();
         for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
-            newValues.add((String) lv.getAdapter().getItem(i));
+            Contact c = list.get(i);
+            newValues.add(c.number + ";" + c.name);
         }
         prefs.edit().putStringSet(getString(R.string.var_numbers_trigger), newValues).putStringSet(getString(R.string.var_numbers_notify), newValues).apply();
         return true;
@@ -108,7 +105,8 @@ public class ContactPickerActivity extends AppCompatActivity {
         Set<String> newValues = new HashSet<>();
         for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
-            newValues.add((String) lv.getAdapter().getItem(i));
+            Contact c = list.get(i);
+            newValues.add(c.number + ";" + c.name);
         }
         prefs.edit().putStringSet(mode, newValues).apply();
     }
