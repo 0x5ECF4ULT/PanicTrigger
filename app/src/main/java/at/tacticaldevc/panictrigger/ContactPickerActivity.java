@@ -63,7 +63,9 @@ public class ContactPickerActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        list.add(new Contact(((TextView)content.findViewById(R.id.contact_number)).getText().toString(), ((TextView)content.findViewById(R.id.contact_name)).getText().toString()));
+                        Contact c = new Contact(((TextView)content.findViewById(R.id.contact_name)).getText().toString(), ((TextView)content.findViewById(R.id.contact_number)).getText().toString());
+                        list.add(c);
+                        rv.getAdapter().notifyItemInserted(list.indexOf(c));
                     }
                 });
                 builder.setNegativeButton("Cancel", null);
@@ -76,11 +78,18 @@ public class ContactPickerActivity extends AppCompatActivity {
         {
             String[] parts = contactString.split(";");
             if(parts.length == 2)
-                list.add(new Contact(parts[1], parts[0]));
+            {
+                Contact c = new Contact(parts[1], parts[0]);
+                list.add(c);
+                rv.getAdapter().notifyItemInserted(list.indexOf(c));
+            }
             else
-                list.add(new Contact("", parts[0]));
+            {
+                Contact c = new Contact("", parts[0]);
+                list.add(c);
+                rv.getAdapter().notifyItemInserted(list.indexOf(c));
+            }
         }
-        rv.getAdapter().notifyDataSetChanged();
     }
 
     @Override
