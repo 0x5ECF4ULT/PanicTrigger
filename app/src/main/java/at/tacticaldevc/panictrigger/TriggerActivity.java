@@ -150,7 +150,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
             if(loc != null)
                 sb.append("\n" + loc.getLatitude() + "\n" + loc.getLongitude());
 
-            manager.sendTextMessage(number, null, sb.toString(), null, null);
+            manager.sendTextMessage(number.split(";")[0], null, sb.toString(), null, null);
         }
     }
 

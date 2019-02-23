@@ -7,43 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
+
+import javax.xml.datatype.Duration;
 
 import at.tacticaldevc.panictrigger.R;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactItem> {
     private List<Contact> list;
-
-    private View.OnClickListener ocl = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //to be implemented: edit functionality
-        }
-    };
-    private View.OnLongClickListener olcl = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(final View v) {
-            AlertDialog.Builder adb = new AlertDialog.Builder(v.getContext());
-            adb.setTitle("Delete?");
-            adb.setMessage("Would you really like to delete this entry?");
-            adb.setPositiveButton("", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    for (Contact c : list)
-                    {
-                        if(c.number.equals(((TextView) v.findViewById(R.id.contact_number)).getText().toString()))
-                        {
-                            list.remove(c);
-                            notifyDataSetChanged();
-                            break;
-                        }
-                    }
-                }
-            });
-            return true;
-        }
-    };
 
     public ContactAdapter(List<Contact> list)
     {
@@ -52,8 +25,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
 
     public ContactItem onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.content_list_item, viewGroup, false);
-        view.setOnClickListener(ocl);
-        view.setOnLongClickListener(olcl);
         return new ContactItem(view);
     }
 
@@ -69,7 +40,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
         return list.size();
     }
 
-    public class ContactItem extends RecyclerView.ViewHolder
+    public class ContactItem extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
         public TextView name, number;
         public Contact c;
@@ -79,6 +50,32 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
             super(itemView);
             name = itemView.findViewById(R.id.name);
             number = itemView.findViewById(R.id.number);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(v.getContext(), "Clicked!", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(v.getContext());
+            adb.setTitle("Delete?");
+            adb.setMessage("Would you really like to delete this entry?");
+            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int i = list.indexOf(c);
+                    list.remove(c);
+                    notifyItemRemoved(i);
+                }
+            });
+            adb.setNegativeButton("No", null);
+            adb.show();
+            return true;
         }
     }
 
