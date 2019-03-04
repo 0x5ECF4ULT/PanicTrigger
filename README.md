@@ -45,7 +45,7 @@ If you want to contribute to this project please refer to "How to [contribute](C
  
  - [osmdroid](https://github.com/osmdroid/osmdroid)
 ## Credits
- - @theNizo for the beautiful icon
+ - [@theNizo](https://github.com/theNizo) for the beautiful icon
 ## Donate
 **Bitcoin:** ```bc1q7my587hlr375h440fydljqaut02wr5jxf09fzw```<br/>
 **Monero:** ```47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j```
