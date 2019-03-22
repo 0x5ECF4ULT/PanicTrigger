@@ -1,8 +1,11 @@
 package at.tacticaldevc.panictrigger;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -54,8 +57,8 @@ public class ContactPickerActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent contacts = new Intent(Intent.ACTION_PICK) //Something doesn't seem to work... Disabling this for now
-                        .setType(ContactsContract.Contacts.CONTENT_TYPE);
+                /*Intent contacts = new Intent(Intent.ACTION_PICK, ContactsContract.PhoneLookup.CONTENT_FILTER_URI)
+                    .setType(ContactsContract.Contacts.CONTENT_TYPE);//Something doesn't seem to work... Disabling this for now
                 startActivityForResult(contacts, 0);*/
 
                 final View content = getLayoutInflater().inflate(R.layout.content_dialog_contact_entry, null);
@@ -125,14 +128,24 @@ public class ContactPickerActivity extends AppCompatActivity {
         prefs.edit().putStringSet(mode, newValues).apply();
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 0 && resultCode == RESULT_OK)
         {
-            Uri contact = data.getData();
-            Cursor c = getContentResolver().query(contact, null, null, null, null);
-            c.moveToFirst();
-            Toast.makeText(this, c.getString(c.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE)), Toast.LENGTH_LONG).show();
+            String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
+            Cursor cursor = getContentResolver().query(data.getData(), projection, null, null, null);
+
+            if(cursor.moveToFirst())
+            {
+                int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                String name = cursor.getString(nameIndex);
+                String number = cursor.getString(numberIndex);
+                // Do something with the phone number
+
+            }
+
+            cursor.close();
         }
-    }*/
+    }
 }

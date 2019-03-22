@@ -62,19 +62,19 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
 
         @Override
         public boolean onLongClick(View v) {
-            AlertDialog.Builder adb = new AlertDialog.Builder(v.getContext());
-            adb.setTitle("Delete?");
-            adb.setMessage("Would you really like to delete this entry?");
-            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int i = list.indexOf(c);
-                    list.remove(c);
-                    notifyItemRemoved(i);
-                }
-            });
-            adb.setNegativeButton("No", null);
-            adb.show();
+            new AlertDialog.Builder(v.getContext())
+                .setTitle("Delete?")
+                .setMessage("Would you really like to delete this entry?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int i = list.indexOf(c);
+                        list.remove(c);
+                        notifyItemRemoved(i);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
             return true;
         }
     }
