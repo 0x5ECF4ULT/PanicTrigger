@@ -9,10 +9,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.HashSet;
@@ -20,11 +22,14 @@ import java.util.Set;
 
 public class TriggerActivity extends AppCompatActivity implements View.OnClickListener, LocationListener
 {
+    private Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trigger);
+
+        v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         if(checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
@@ -130,6 +135,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.triggerButton:
+                this.v.vibrate(1000);
                 getCurrentLocationAndPanic();
                 break;
             case R.id.configure:
