@@ -5,6 +5,8 @@
       alt="Get it on F-Droid"
       height="80">](https://f-droid.org/packages/at.tacticaldevc.panictrigger/)
 
+<a href="https://www.patreon.com/bePatron?u=18684017" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+
 ## Description
 PanicTrigger is an Android app which can help you in case of an emergency situation. In case of an emergency you tap on a big red button which causes the app to send out SMS to your preconfigured contacts without comfirmation. So don’t tap on the wrong button ;-)
 PanicTrigger runs in the background and listens for incoming SMS this is why it needs the permission to read your SMS. Trust me I won’t read your SMS :)<br/>
