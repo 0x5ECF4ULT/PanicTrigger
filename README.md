@@ -5,8 +5,6 @@
       alt="Get it on F-Droid"
       height="80">](https://f-droid.org/packages/at.tacticaldevc.panictrigger/)
 
-<a href="https://www.patreon.com/bePatron?u=18684017" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
-
 ## Description
 PanicTrigger is an Android app which can help you in case of an emergency situation. In case of an emergency you tap on a big red button which causes the app to send out SMS to your preconfigured contacts without comfirmation. So don’t tap on the wrong button ;-)
 PanicTrigger runs in the background and listens for incoming SMS this is why it needs the permission to read your SMS. Trust me I won’t read your SMS :)<br/>
@@ -42,15 +40,18 @@ If you want to contribute to this project please refer to "How to [contribute](C
 - ```android.permission.WRITE_EXTERNAL_STORAGE``` is needed for writing to the tile cache (osmdroid)
 ## Links
  - [License](LICENSE)
+ - [Privacy statement](Privacy.md)
  - [How to contribute](CONTRIBUTING.md)
  - [PR template](PULL_REQUEST_TEMPLATE.md)
  
  - [osmdroid](https://github.com/osmdroid/osmdroid)
 ## Credits
  - [@theNizo](https://github.com/theNizo) for the beautiful icon
+ - [@HarryHeights](https://github.com/HarryHeights) for the privacy statement and his strong support
 ## Donate
 **Bitcoin:** ```bc1q7my587hlr375h440fydljqaut02wr5jxf09fzw```<br/>
 **Monero:** ```47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j```
+**Patreon:** <a href="https://www.patreon.com/bePatron?u=18684017" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 ## License
 Go to [license](LICENSE)
 
