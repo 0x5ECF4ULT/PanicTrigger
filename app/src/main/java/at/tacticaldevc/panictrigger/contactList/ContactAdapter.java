@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.datatype.Duration;
 
@@ -38,6 +40,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public Set<String> getGroups()
+    {
+        Set<String> groups = new HashSet<>();
+
+        groups.add("General");
+
+        for(Contact c : list)
+        {
+            groups.add(c.groupID);
+        }
+
+        groups.add("Add group...");
+
+        return groups;
     }
 
     public class ContactItem extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener

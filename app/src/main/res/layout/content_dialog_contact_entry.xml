@@ -26,4 +26,10 @@
         android:ems="10"
         android:hint="Phone number"
         android:inputType="phone" />
+
+    <Spinner
+        android:id="@+id/group_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown" />
 </LinearLayout>
