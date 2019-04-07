@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -66,8 +67,27 @@ public class ContactPickerActivity extends AppCompatActivity {
                 final View content = getLayoutInflater().inflate(R.layout.content_dialog_contact_entry, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(ContactPickerActivity.this);
 
-                ArrayAdapter<String> ad = new ArrayAdapter<String>(ContactPickerActivity.this, R.layout.support_simple_spinner_dropdown_item, ((ContactAdapter)rv.getAdapter()).getGroups().toArray(new String[]{}));
+                final ArrayAdapter<String> ad = new ArrayAdapter<String>(ContactPickerActivity.this, R.layout.support_simple_spinner_dropdown_item, ((ContactAdapter)rv.getAdapter()).getGroups().toArray(new String[]{}));
                 ((Spinner)content.findViewById(R.id.group_select)).setAdapter(ad);
+                ((Spinner)content.findViewById(R.id.group_select)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if(ad.getItem(position).equals("Add group..."))
+                        {
+                            final TextView tv = new TextView(ContactPickerActivity.this);
+                            new AlertDialog.Builder(ContactPickerActivity.this)
+                                    .setTitle("Enter new group name")
+                                    .setView(tv)
+                                    .setPositiveButton("", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            ad.add(tv.getText().toString());
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                });
 
                 builder.setView(content);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
