@@ -41,13 +41,13 @@ If you want to contribute to this project please refer to "How to [contribute](C
 ## Links
  - [License](LICENSE)
  - [Privacy statement](Privacy.md)
- - [How to contribute](CONTRIBUTING.md)
+ - [How to contribute](Contributing.md)
  - [PR template](PULL_REQUEST_TEMPLATE.md)
  
  - [osmdroid](https://github.com/osmdroid/osmdroid)
 ## Credits
  - [@theNizo](https://github.com/theNizo) for the beautiful icon
- - [@HarryHeights](https://github.com/HarryHeights) for the privacy statement and his strong support
+ - [@HarryHeights](https://github.com/HarryHeights) for the privacy statement, contribution guide and his strong support
 ## Donate
 **Bitcoin:** ```bc1q7my587hlr375h440fydljqaut02wr5jxf09fzw```<br/>
 **Monero:** ```47JuiUvKZXL7by3drpFTxHgv9DWPgj9pP8TMiGqxdZugEAVKUXwok2Hbopdc8qYBnLNuQdR6VptmFiDqByRVMVX3Ra8vw9j```
