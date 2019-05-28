@@ -111,9 +111,9 @@ public class ContactPickerActivity extends AppCompatActivity {
             String[] parts = contactString.split(";");
 
             Contact c = new Contact(
-                    (parts.length == 2 ? parts[1] : ""),
+                    (parts.length >= 2 ? parts[1] : ""),
                     parts[0],
-                    (parts.length == 3 ? parts[2] : "General")
+                    (parts.length >= 3 ? parts[2] : "General")
             );
 
             list.add(c);
