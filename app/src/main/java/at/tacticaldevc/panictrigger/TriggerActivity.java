@@ -10,15 +10,17 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import at.tacticaldevc.panictrigger.utils.Utils;
 
 public class TriggerActivity extends AppCompatActivity implements View.OnClickListener, LocationListener
 {
@@ -31,30 +33,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
 
         v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        if(checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.CALL_PRIVILEGED) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[]{
-                    Manifest.permission.RECEIVE_SMS,
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_CONTACTS,
-                    Manifest.permission.CALL_PRIVILEGED,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            }, 1);
-        }
+        requestPermissions(Utils.checkPermissions(this), 255);
 
         if(!getSharedPreferences("conf", MODE_PRIVATE).getBoolean("firstStartDone", false))
         {
@@ -97,11 +76,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                                             startActivity(new Intent(TriggerActivity.this, SettingsActivity.class));
                                         }
                                     })
-                                    .setNegativeButton("Yes.", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                        }
-                                    })
+                                    .setNegativeButton("Yes.", null)
                                     .show();
                         }
                     })
@@ -168,7 +143,6 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(emergService);
             return;
         }
-        Location currLoc;
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         try
         {
@@ -181,7 +155,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         }
         catch (Exception e)
         {
-            Toast.makeText(this, "GPS fix could be acquired. Please check your settings!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "GPS fix could not be acquired. Please check your settings!", Toast.LENGTH_LONG).show();
             sendOutPanic(null);
         }
     }
@@ -210,5 +184,17 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(!Utils.onRequestPermissionsResult(requestCode, permissions, grantResults))
+        {
+            new AlertDialog.Builder(TriggerActivity.this)
+                    .setTitle("Permissions")
+                    .setMessage("It looks like not all permissions have been granted.\nPlease grant them or the app will not work!")
+                    .show();
+            findViewById(R.id.triggerButton).setEnabled(false);
+        }
     }
 }
