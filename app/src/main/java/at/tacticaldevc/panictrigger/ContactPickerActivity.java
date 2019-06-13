@@ -134,7 +134,7 @@ public class ContactPickerActivity extends AppCompatActivity {
         for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
             Contact c = list.get(i);
-            newValues.add(c.number + ";" + c.name + "," + c.groupID);
+            newValues.add(c.number + ";" + c.name + ";" + c.groupID);
         }
         prefs.edit().putStringSet(getString(R.string.var_numbers_trigger), newValues).putStringSet(getString(R.string.var_numbers_notify), newValues).apply();
         return true;
