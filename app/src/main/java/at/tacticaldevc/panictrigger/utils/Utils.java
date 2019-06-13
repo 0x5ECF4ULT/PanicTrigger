@@ -15,7 +15,7 @@ import at.tacticaldevc.panictrigger.contactList.Contact;
 public class Utils {
 
     //contact related stuff
-    public static Set<String> getContactGroups(Context c)
+    public static String[] getContactGroups(Context c)
     {
         Set<String> groups = new HashSet<>();
 
@@ -26,7 +26,7 @@ public class Utils {
             groups.add(getContact(contactString).groupID);
         }
 
-        return groups;
+        return groups.toArray(new String[groups.size()]);
     }
 
     public static Contact getContact(String contactString)
@@ -40,6 +40,19 @@ public class Utils {
         return c;
     }
 
+    public static Contact[] getContactsByGroup(String group, Context c)
+    {
+        Set<Contact> contacts = new HashSet<>();
+
+        for(String contactString : c.getSharedPreferences("conf", Context.MODE_PRIVATE).getStringSet(c.getString(R.string.var_numbers_notify), new HashSet<String>()))
+        {
+            if(group.equals("General") || contactString.split(";")[2].equals(group))
+                contacts.add(getContact(contactString));
+        }
+
+        return contacts.toArray(new Contact[contacts.size()]);
+    }
+
 
     //permission related stuff
     public static String[] checkPermissions(Context c)
@@ -50,8 +63,6 @@ public class Utils {
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.CALL_PHONE);
-        permissions.add(Manifest.permission.READ_CONTACTS);
-        permissions.add(Manifest.permission.CALL_PRIVILEGED);
         permissions.add(Manifest.permission.INTERNET);
         permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);

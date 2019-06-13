@@ -1,9 +1,7 @@
 package at.tacticaldevc.panictrigger;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,16 +13,20 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import at.tacticaldevc.panictrigger.contactList.Contact;
 import at.tacticaldevc.panictrigger.utils.Utils;
 
 public class TriggerActivity extends AppCompatActivity implements View.OnClickListener, LocationListener
 {
     private Vibrator v;
+    private Contact[] notifyContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,9 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
 
         v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        requestPermissions(Utils.checkPermissions(this), 255);
+        String[] perms;
+        if((perms = Utils.checkPermissions(this)).length > 0)
+            requestPermissions(perms, 255);
 
         if(!getSharedPreferences("conf", MODE_PRIVATE).getBoolean("firstStartDone", false))
         {
@@ -110,8 +114,28 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.triggerButton:
+                if(callEmergServices())
+                {
+                    Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
+                    startActivity(emergService);
+                    return;
+                }
+
                 this.v.vibrate(1000);
-                getCurrentLocationAndPanic();
+                final View content = getLayoutInflater().inflate(R.layout.content_dialog_trigger_group_select, null);
+                final ArrayAdapter<String> ad = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, Utils.getContactGroups(this));
+                ((Spinner)content.findViewById(R.id.emergency_group)).setAdapter(ad);
+
+                new AlertDialog.Builder(this)
+                        .setView(content)
+                        .setPositiveButton("Trigger", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                notifyContacts = Utils.getContactsByGroup(((Spinner)content.findViewById(R.id.emergency_group)).getSelectedItem().toString(), TriggerActivity.this);
+                                getCurrentLocationAndPanic();
+                            }
+                        })
+                        .show();
                 break;
             case R.id.configure:
                 Intent settings = new Intent(this, SettingsActivity.class);
@@ -122,27 +146,20 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
 
     private void sendOutPanic(Location loc)
     {
-        Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
         String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
         SmsManager manager = SmsManager.getDefault();
-        for (String number : contacts)
+        for (Contact c : notifyContacts)
         {
             StringBuilder sb = new StringBuilder(keyword);
             if(loc != null)
                 sb.append("\n" + loc.getLatitude() + "\n" + loc.getLongitude());
 
-            manager.sendTextMessage(number.split(";")[0], null, sb.toString(), null, null);
+            manager.sendTextMessage(c.number, null, sb.toString(), null, null);
         }
     }
 
     private void getCurrentLocationAndPanic()
     {
-        if(callEmergServices())
-        {
-            Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
-            startActivity(emergService);
-            return;
-        }
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         try
         {

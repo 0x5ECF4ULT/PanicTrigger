@@ -69,16 +69,16 @@ public class ContactPickerActivity extends AppCompatActivity {
 
                 final ArrayAdapter<String> ad = new ArrayAdapter<String>(ContactPickerActivity.this, R.layout.support_simple_spinner_dropdown_item, ((ContactAdapter)rv.getAdapter()).getGroups().toArray(new String[]{}));
                 ((Spinner)content.findViewById(R.id.group_select)).setAdapter(ad);
-                ((Spinner)content.findViewById(R.id.group_select)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                ((Spinner)content.findViewById(R.id.group_select)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if(ad.getItem(position).equals("Add group..."))
                         {
                             final TextView tv = new TextView(ContactPickerActivity.this);
                             new AlertDialog.Builder(ContactPickerActivity.this)
                                     .setTitle("Enter new group name")
                                     .setView(tv)
-                                    .setPositiveButton("", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             ad.add(tv.getText().toString());
@@ -87,6 +87,9 @@ public class ContactPickerActivity extends AppCompatActivity {
                                     .show();
                         }
                     }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
                 });
 
                 builder.setView(content);
