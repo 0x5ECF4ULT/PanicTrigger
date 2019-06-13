@@ -53,8 +53,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
             groups.add(c.groupID);
         }
 
-        groups.add("Add group...");
-
         return groups;
     }
 
