@@ -17,6 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -64,17 +68,41 @@ public class ContactPickerActivity extends AppCompatActivity {
                 final View content = getLayoutInflater().inflate(R.layout.content_dialog_contact_entry, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(ContactPickerActivity.this);
 
-                builder.setView(content);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                final ArrayAdapter<String> ad = new ArrayAdapter<>(ContactPickerActivity.this, R.layout.support_simple_spinner_dropdown_item);
+                ad.addAll(((ContactAdapter)rv.getAdapter()).getGroups().toArray(new String[]{}));
+                ((Spinner)content.findViewById(R.id.group_select)).setAdapter(ad);
+
+                AlertDialog alert = builder.setView(content)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Contact c = new Contact(((TextView)content.findViewById(R.id.contact_name)).getText().toString(),
+                                        ((TextView)content.findViewById(R.id.contact_number)).getText().toString(),
+                                        ((String)((Spinner)content.findViewById(R.id.group_select)).getSelectedItem()));
+                                list.add(c);
+                                rv.getAdapter().notifyItemInserted(list.indexOf(c));
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .setNeutralButton("New group", null)
+                        .create();
+                alert.show();
+                alert.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Contact c = new Contact(((TextView)content.findViewById(R.id.contact_name)).getText().toString(), ((TextView)content.findViewById(R.id.contact_number)).getText().toString());
-                        list.add(c);
-                        rv.getAdapter().notifyItemInserted(list.indexOf(c));
+                    public void onClick(View v) {
+                        final EditText et = new EditText(ContactPickerActivity.this);
+                        new AlertDialog.Builder(ContactPickerActivity.this)
+                                .setTitle("Enter new group name")
+                                .setView(et)
+                                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ad.add(et.getText().toString());
+                                    }
+                                })
+                                .show();
                     }
                 });
-                builder.setNegativeButton("Cancel", null);
-                builder.show();
             }
         });
 
@@ -82,18 +110,15 @@ public class ContactPickerActivity extends AppCompatActivity {
         for(String contactString : prefs.getStringSet(mode, new HashSet<String>()))
         {
             String[] parts = contactString.split(";");
-            if(parts.length == 2)
-            {
-                Contact c = new Contact(parts[1], parts[0]);
-                list.add(c);
-                rv.getAdapter().notifyItemInserted(list.indexOf(c));
-            }
-            else
-            {
-                Contact c = new Contact("", parts[0]);
-                list.add(c);
-                rv.getAdapter().notifyItemInserted(list.indexOf(c));
-            }
+
+            Contact c = new Contact(
+                    (parts.length >= 2 ? parts[1] : ""),
+                    parts[0],
+                    (parts.length >= 3 ? parts[2] : "General")
+            );
+
+            list.add(c);
+            rv.getAdapter().notifyItemInserted(list.indexOf(c));
         }
     }
 
@@ -109,7 +134,7 @@ public class ContactPickerActivity extends AppCompatActivity {
         for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
             Contact c = list.get(i);
-            newValues.add(c.number + ";" + c.name);
+            newValues.add(c.number + ";" + c.name + ";" + c.groupID);
         }
         prefs.edit().putStringSet(getString(R.string.var_numbers_trigger), newValues).putStringSet(getString(R.string.var_numbers_notify), newValues).apply();
         return true;
@@ -123,7 +148,7 @@ public class ContactPickerActivity extends AppCompatActivity {
         for(int i = 0; i < rv.getAdapter().getItemCount(); i++)
         {
             Contact c = list.get(i);
-            newValues.add(c.number + ";" + c.name);
+            newValues.add(c.number + ";" + c.name + ";" + c.groupID);
         }
         prefs.edit().putStringSet(mode, newValues).apply();
     }

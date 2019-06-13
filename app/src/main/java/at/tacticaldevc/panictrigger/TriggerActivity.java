@@ -1,55 +1,43 @@
 package at.tacticaldevc.panictrigger;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import at.tacticaldevc.panictrigger.contactList.Contact;
+import at.tacticaldevc.panictrigger.utils.Utils;
+
 public class TriggerActivity extends AppCompatActivity implements View.OnClickListener, LocationListener
 {
+    private Vibrator v;
+    private Contact[] notifyContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trigger);
 
-        if(checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.CALL_PRIVILEGED) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[]{
-                    Manifest.permission.RECEIVE_SMS,
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_CONTACTS,
-                    Manifest.permission.CALL_PRIVILEGED,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            }, 1);
-        }
+        v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+        String[] perms;
+        if((perms = Utils.checkPermissions(this)).length > 0)
+            requestPermissions(perms, 255);
 
         if(!getSharedPreferences("conf", MODE_PRIVATE).getBoolean("firstStartDone", false))
         {
@@ -92,11 +80,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
                                             startActivity(new Intent(TriggerActivity.this, SettingsActivity.class));
                                         }
                                     })
-                                    .setNegativeButton("Yes.", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                        }
-                                    })
+                                    .setNegativeButton("Yes.", null)
                                     .show();
                         }
                     })
@@ -130,7 +114,28 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.triggerButton:
-                getCurrentLocationAndPanic();
+                if(callEmergServices())
+                {
+                    Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
+                    startActivity(emergService);
+                    return;
+                }
+
+                this.v.vibrate(1000);
+                final View content = getLayoutInflater().inflate(R.layout.content_dialog_trigger_group_select, null);
+                final ArrayAdapter<String> ad = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, Utils.getContactGroups(this));
+                ((Spinner)content.findViewById(R.id.emergency_group)).setAdapter(ad);
+
+                new AlertDialog.Builder(this)
+                        .setView(content)
+                        .setPositiveButton("Trigger", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                notifyContacts = Utils.getContactsByGroup(((Spinner)content.findViewById(R.id.emergency_group)).getSelectedItem().toString(), TriggerActivity.this);
+                                getCurrentLocationAndPanic();
+                            }
+                        })
+                        .show();
                 break;
             case R.id.configure:
                 Intent settings = new Intent(this, SettingsActivity.class);
@@ -141,28 +146,20 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
 
     private void sendOutPanic(Location loc)
     {
-        Set<String> contacts = getSharedPreferences("conf", MODE_PRIVATE).getStringSet(getString(R.string.var_numbers_notify), new HashSet<String>());
         String keyword = getSharedPreferences("conf", MODE_PRIVATE).getString(getString(R.string.var_words_keyword), "Panic");
         SmsManager manager = SmsManager.getDefault();
-        for (String number : contacts)
+        for (Contact c : notifyContacts)
         {
             StringBuilder sb = new StringBuilder(keyword);
             if(loc != null)
                 sb.append("\n" + loc.getLatitude() + "\n" + loc.getLongitude());
 
-            manager.sendTextMessage(number.split(";")[0], null, sb.toString(), null, null);
+            manager.sendTextMessage(c.number, null, sb.toString(), null, null);
         }
     }
 
     private void getCurrentLocationAndPanic()
     {
-        if(callEmergServices())
-        {
-            Intent emergService = new Intent(Intent.ACTION_CALL, Uri.parse("tel:112"));
-            startActivity(emergService);
-            return;
-        }
-        Location currLoc;
         LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         try
         {
@@ -175,7 +172,7 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
         }
         catch (Exception e)
         {
-            Toast.makeText(this, "GPS fix could be acquired. Please check your settings!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "GPS fix could not be acquired. Please check your settings!", Toast.LENGTH_LONG).show();
             sendOutPanic(null);
         }
     }
@@ -204,5 +201,17 @@ public class TriggerActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(!Utils.onRequestPermissionsResult(requestCode, permissions, grantResults))
+        {
+            new AlertDialog.Builder(TriggerActivity.this)
+                    .setTitle("Permissions")
+                    .setMessage("It looks like not all permissions have been granted.\nPlease grant them or the app will not work!")
+                    .show();
+            findViewById(R.id.triggerButton).setEnabled(false);
+        }
     }
 }
