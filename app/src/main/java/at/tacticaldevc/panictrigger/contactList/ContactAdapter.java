@@ -34,6 +34,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
         Contact ci = list.get(i);
         contactItem.name.setText(ci.name);
         contactItem.number.setText(ci.number);
+        contactItem.group.setText(ci.groupID);
         contactItem.c = ci;
     }
 
@@ -58,7 +59,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
 
     public class ContactItem extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
-        public TextView name, number;
+        public TextView name, number, group;
         public Contact c;
         public View v;
 
@@ -66,6 +67,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactI
             super(itemView);
             name = itemView.findViewById(R.id.name);
             number = itemView.findViewById(R.id.number);
+            group = itemView.findViewById(R.id.group);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
