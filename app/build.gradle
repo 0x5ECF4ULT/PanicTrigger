@@ -6,9 +6,9 @@ android {
         applicationId "at.tacticaldevc.panictrigger"
         minSdkVersion 23
         targetSdkVersion 28
-        versionName 'v0.4-4'
+        versionName 'v0.5'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 9
+        versionCode 10
     }
     buildTypes {
         release {
