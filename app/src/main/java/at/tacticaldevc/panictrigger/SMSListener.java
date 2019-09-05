@@ -60,6 +60,7 @@ public class SMSListener extends BroadcastReceiver {
                     .putExtra("long", Double.parseDouble(longitude)), PendingIntent.FLAG_UPDATE_CURRENT);
 
         smsManager.sendTextMessage(address, null, "Panic triggered!", null, null);
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel ch = new NotificationChannel("Trigger", "Trigger", NotificationManager.IMPORTANCE_HIGH);
             ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(ch);
@@ -71,13 +72,14 @@ public class SMSListener extends BroadcastReceiver {
             //TODO: Ringtone doesn't seem to loop...
             mp.setLooping(true);
             mp.prepare();
+
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Trigger")
                     .setSmallIcon(R.drawable.ic_sms_failed)
                     .setContentTitle("!!! PANIC !!!")
-                    .setContentText(address + "triggered alarm! Calling in 1 minute!\n" +
-                            latitude != null && longitude != null ? "Sender is at " + latitude + "; " + longitude : "")
+                    .setContentText(address + "triggered alarm!\n" +
+                            (latitude != null && longitude != null ? "Sender is at " + latitude + "; " + longitude : ""))
                     .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .addAction(R.drawable.ic_call, "Call now!", callIntent)
+                    .addAction(R.drawable.ic_call, "Call!", callIntent)
                     .setContentIntent(mapIntent);
             NotificationManagerCompat.from(context).notify(0, builder.build());
             mp.start();
@@ -89,7 +91,7 @@ public class SMSListener extends BroadcastReceiver {
                     mp.release();
                     try {
                         callIntent.send();
-                    } catch (PendingIntent.CanceledException e) {}
+                    } catch (PendingIntent.CanceledException ignored) {}
                 }
             };
             new Handler().postDelayed(cntDown, 60000);
