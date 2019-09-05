@@ -25,7 +25,7 @@ If you want to contribute to this project please refer to "How to [contribute](C
  - In case there are no contacts configured call emergency services
  - Contacts grouping
 ## Coming soon…
-Please refer to the [Issues](https://github.com/tacticalDevC/PanicTrigger/issues)
+Please refer to the [Issues](https://github.com/tacticalDevC/PanicTrigger/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 ## Permissions
 - ```android.permission.RECEIVE_SMS``` is needed to receive the emergency SMS
 - ```android.permission.SEND_SMS``` is needed to send the emergency SMS
