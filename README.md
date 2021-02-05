@@ -4,6 +4,9 @@
 [<img src="https://f-droid.org/badge/get-it-on.png" 
       alt="Get it on F-Droid"
       height="80">](https://f-droid.org/packages/at.tacticaldevc.panictrigger/)
+      
+## WARNING: This project is currently unmaintained!
+If you want to pick up the development shoot me an [email](mailto:hello@ox5ecf4ult.pw) with [my public key](https://keys.openpgp.org/vks/v1/by-fingerprint/2E8B9179A169C5530244457DAEE7976D99D6E7FF).
 
 ## Description
 PanicTrigger is an Android app which can help you in an emergency situation. In such a case you tap on a big red button which causes the app to send out SMS to your preconfigured contacts/groups without comfirmation. So don’t tap on the wrong button ;-)
